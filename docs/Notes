@@ -1,0 +1,203 @@
+Homework 7 Plan
+
+The model is an observable object
+The view is an observable object
+The controller is the observer
+//TODO List
+
+//TODO: "Weird Error, kept code but I can explain later" - David
+- Notify the player that it's their turn with a pop-up (Make sure the game starts with a pop-up saying it's the Red Player's turn)
+
+//TODO: Done (Only shows messages for game-related errors)
+- Convert error messages to a pop-up (make sure the errors don't crash the game)
+
+//TODO: Not Done
+- Implement a machine player that works exactly like a HumanPlayer but makes decisions based on a chosen strategy
+
+//TODO: Done
+- Make sure the current player cannot select the other player's cards
+
+//TODO: Done - Needs fixing, currently results in many bugs after a pop-up appears
+- Show a pop-up if the player selects an invalid cell or if they select a cell without first selecting a card.
+
+//TODO: Done
+- Implement the listener for the end of a game (a pop-up should state who won)
+
+//TODO: Not Done
+- Make the game runnable from the command line using the commands detailed in Section 6.2 of the instructions.
+
+//TODO: Complete Once everything else is Done
+- Update the ReadME
+
+// Done todos:
+    // Fix the playCard issues
+        // Change the behaviour of the controller's playCard stuff to not try and play until a
+        // valid cell has been chosen
+    // Make sure the turns switch after a successful play
+    // Fix the end of turn listener to detected when its not that player's turn anymore and
+        // then set its view visibility to false
+    // Hard code the title of each view to that player's color (because it won't change)
+
+
+Events:
+
+- Player Chooses a card
+- Player Places a card
+
+Notifications:
+
+- Model tells player "Its your turn"
+
+Controller needs to listen for both playerEvents (coming from the view) and modelNotifications (coming from the model)
+
+Notes on order of events for play
+
+model.startGame()     <--- Sets the visibility for the redView to true  ---  Notifies the redPlayer that its their turn
+
+redPlayer hears its their turn    <--- redController listens for a card selection  <--- card selections can be made as many times as they want
+				  <--- once a card has been chosen, redController listens for a cell selection  <--- the chosen card is played at that cell (attempted)
+				  <--- If the cell is invalid, display a popup saying so  <--- Continue trying to place until successful
+				  <--- Once the card placement has been made, switch turns  <--- notify the bluePlayer its their turn
+
+bluePlayer hears its their turn   <--- repeat above
+
+
+//TODO: David 11/19
+Computer/strategies (classes and relevant interfaces) see ComputerPlayers and all StrategyClasses for new method getAvailableCells()
+added a quick getter method for possible cells for MachinePlayer
+Updated HumanPlayer and MachinePlayer methods:
+ - added color to constructor (not sure if this is needed, will clarify later)
+
+
+
+
+//TODO: David 11/17
+ThreeTriosPlayerController: outlined all methods i think are needed
+ThreeTriosComputerController: outlined all methods i think are needed
+TripleTriadController: added since we need multiple controllers
+ModelStatus: remade
+PlayerAction: remade
+Features (interface): added as per part 2
+
+//TODO: David 11/18
+added: ModelListener, PlayerListener
+Modified: ThreeTriosPlayerController
+Modified: ThreeTriosView (to add modellistener)
+Modified: ThreeTriosModel (to add modellistener)
+Modified: ThreeTriosViewModel (to add modellistener)
+
+
+
+As per the instructions: What To Do
+
+//TODO: refactor current code to work with controllers
+
+    Attempt an initial design for the player-action and model-status interfaces.         (WIP) added model/player interfaces 11/15 Alex
+    (They should be fairly small interfaces, with very few methods.)
+    Make sure you have clearly documented the purposes of those interfaces and their methods,
+    to guide you in the next implementation stages.
+    Implement the ability for your views to add player-action listeners,
+    and for your model to add model-status listeners.
+
+    Design a controller that takes in a model, which player they are working for,           started controller -- will continue to work -- 11/15 Alex
+    and a view for that player.
+    It should register itself as a listener for both features interfaces,
+    and should mediate between the view and the model on behalf of that player.
+
+    Update your main() method as described above.                                      Added controller, player, and view objects but subject to change - 11/15 alex
+
+    Update your README file to include explanations of all the new classes you’ve designed.
+    Be sure to include a “Changes for part 3” section documenting what you changed from
+    your initial design or from the previous assignment.
+
+
+Overall Requirements
+
+- Build a Controller
+
+- Listeners for various features
+
+- Interfaces to connect the components
+
+- Refactor the model & view to follow any advice from prior submissions
+
+- Design a features interface to enhance the view with the ability to add listeners
+
+- Our game-play must follow the following pattern: Notify the Player it's their turn, Wait for their response
+
+- Each player should have their own controller
+
+- Design a features interface for the MODEL, which listens for events like
+  "it's your turn" or ____ player selected a card, or ____ player played a card.
+
+
+Designing the Controller:
+
+- The controller implementation will need to take in a player implementation                            //TODO: done
+  (either machine or human), and a view showing the game from that player’s perspective.
+
+- The controller will need to register itself as a listener of player actions coming from             //TODO: still working on that ALEX 11/20
+  both the view and the player that it’s controlling — and again, in practice either                   but added to the registerListeners() method ALEX
+  view or the player will emit those actions, not both.                                             pretty much just added to the playerController and
+                                                                                                      added a notify method to view
+- The controller must ensure that its player can only take action when its that player’s turn.
+  This means the other player waiting should not be able to place cards on the grid or select cards at all.
+  Accordingly, the controller must register itself as a listener for events coming from the model,
+  so that it can be informed when the active player changes.
+
+- The controller must prevent a player from selecting cards in their opponent’s hand at all times.          //TODO: added this in the playerController ALEX 11/20
+
+- The controller must ensure that the player has selected a card from their hand to play before
+  they choose a cell to play to. Once both have occurred and both are valid,
+  then the player can make the move and pass over/switch over to the other player.
+
+- The controller should ensure that its view stays up to date, even if the player is a machine
+  and doesn’t interact with the view directly. Reread the discussion specifically about toggleColor
+  in Lecture 13: GUI Basics, as the design concerns there might be similarly applicable here.
+
+- Your model is likely capable of throwing exceptions when a given move is invalid.
+  Your controller and/or your view must somehow handle these exceptions and make them visible to the user;
+  it is not acceptable for them to silently fail and leave a warning in the console.
+  For example, you can use the showMessageDialog method to display the error message to the player:
+
+- Finally, when the game is over, the game must display who won and the winning score.
+  This must be visible to the user much like an error message is.
+
+- You may find it helpful to set the title of the views to their respective players and whether they are playing out their turn or waiting for their turn.
+
+
+Create Two Views
+
+- Each view will be connected to one player
+
+Configuring the Game
+
+- Games should be runnable from the command-line
+
+ ----------------------------------------------------------------
+Controller:
+* connect selecting grid/highlighting hand to controller
+* State of game decides next choice of move
+* player implementation (human or machine)
+* view showing game from player pov
+* player can only play when their turn
+* player can never select opponents hands
+* check for selected card from hand and cell to play to before move and change turn
+* display errors/exceptions caught to view
+
+
+Create features interface describing player actions
+* choosing a card to play
+* choosing position to play to
+
+View
+* should take listeners for player actions
+
+Model
+* when human turn model should notify (showMessageDialog?) and wait human move (seperate the steps)
+* create model interface that can add listeners for events such as notifications
+* "should have a startGame method on your model, to ensure that there is a clear distinction between “setting everything up” and “actually playing the game" "
+
+
+
+
