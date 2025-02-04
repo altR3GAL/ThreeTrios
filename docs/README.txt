@@ -1,91 +1,4 @@
-changes for part 3:
- - tests:
-   - made all fields that were not private and could be private private
-   - added tests for model interface methods - getGameState(), getPlayer(), canBePlayed(),
-     canBeFlipped(), getScore(), getOpponent(), getCurrentPlayer(), calculateScore()
-   - added tests for interface methods for the requested observations - gridSize,
-     cellContents, getHand, getCellOwner
-
- - code:
-   - added documentation for all methods, classes, and constructors that were missing them.
-   - changed:
-     - ThreeTriosTextView moved to view package and takes in readonly instead of full model
-   - added interface methods for the requested observations - gridSize, cellContents, getHand, getCellOwner
-   - added listening functionality to the view and model
-
-EXTRA CREDIT:
-extra credit strategies implemented:
-  - can find all of the in src.cs3500.threetrios.model
-    - LeastFlipsComputer
-    - MiniMaxComputer
-    - MergerComputer
-tests for extra credit strategies:
-  - can find all in test.cs3500.threetrios.model
-    - LeastFlipsComputerTest
-    - MiniMaxComputerTest
-    - MergerComputerTest
-
-Changes for part 2:
-    Added functionality/methods:
-    explain what functionality was missing, and why, and how you chose to add it.
-
-
-    - canBePlayed: this function was missing because during homework 5 we did not need a method to check
-    if a certain location could be played since our cell's could already do that. We chose to add it by
-    adding a getter method of sorts.
-    - getPlayer: this function was missing because during homework 5 we did not need a method to get the
-    player at a certain location because our card class could already do something very similar to that.
-    We chose to add it by adding a getter method of sorts.
-    - canBeFlipped: this function was missing because during homework 5 we did not need a method to get the
-    amount of cards a location can flip at the moment. We chose to add it through a recursive approach, similar
-    but different to how we resolve battles.
-    - getScore: this was missing because during homework 5 we did not need a method to get the score of a
-    specific player since we had a similar method calculateScore that did essentially that but decided a
-    winner at the end. We decided to implement it in a similar way to calculateScore but only have it return
-    the score of the desired player.
-    - getOpponent: this was missing because during homework 5 we did not need a method to get the opponent.
-    we decided to implement it by using a getter method of sorts.
-    - getPlayer: this was missing because during homework 5 we did not need a method to get the current player
-    because we had a value currentTurn that essentially did the same thing. We decided to implement it by
-    using a getter method of sorts.
-    - getRedHand: this was missing because during homework 5 we did not need a method to get the red players
-    hand since we already had a similar method getHand in the playerstructure that did the same thing. We
-    decided to implement it by using a getter method of sorts
-    - getBlueHand: this was missing because during homework 5 we did not need a method to get the blue players
-    hand since we already had a similar method getHand in the playerstructure that did the same thing. We
-    decided to implement it by using a getter method of sorts
-    - Updated the viewing methods to allow the view to "read" the model.
-        - Refactored into the ReadOnlyModel
-
-    Changed methods and structures:
-    - moved PlayerStructure out of ThreeTriosModel and into it's own class since having an inner class
-      made mocking impossible. The inner class would conflict when a computer/strategy would try to access
-      it.
-
-Model Invarient:
-
-    A class invariant for ThreeTriosModel would be: gameStarted is only true if startGame has run.
-   1. This is a statement that can be answered with true or false.
-   2. This statement can be satisfied at all points in time.
-      When startGame has not run gameStarted
-      is false since the constructor sets it to false, meaning that
-      any time before startGame is
-      called, gameStarted will be false. After startGame is called
-      there are no other methods that
-      can alter the state of gameStarted. In addition, startGame
-      cannot be called again while gameStarted is true,
-      meaning that gameStarted can never be mutated again and therefore
-      satisfy the invariant statement.
-   3. The constructor sets gameStarted to false, meaning that any time
-      before startGame is called,
-      gameStarted will be false, thus satisfying the invariant statement.
-   4. There are no methods other than the constructor and startGame that
-      modify gameStarted, the
-      only other times gameStarted is used it only being viewed, and thus
-      cannot be changed.
-      Thus, there are no methods that invalidate the class invariant.
-
- Overview:
+Overview:
  What Problem Is The Codebase Trying To Solve:
  The primary problem that the codebase is trying to solve is how do we enforce the rules of the game while maintaining
  a proper game state and proper player interactions with the game. In addition to that, the codebase is trying to
@@ -361,3 +274,93 @@ Either explain for each component where to find it in your codebase:
      - HumanPlayerTest: tests if the HumanPlayer class and all it's methods work.
      - HumanPlayerTest: tests if the MachinePLayer class and all it's methods work.
      - PlayerControllerTest: tests if the player controller and all it's important functions work.
+
+
+changes for part 3:
+ - tests:
+   - made all fields that were not private and could be private private
+   - added tests for model interface methods - getGameState(), getPlayer(), canBePlayed(),
+     canBeFlipped(), getScore(), getOpponent(), getCurrentPlayer(), calculateScore()
+   - added tests for interface methods for the requested observations - gridSize,
+     cellContents, getHand, getCellOwner
+
+ - code:
+   - added documentation for all methods, classes, and constructors that were missing them.
+   - changed:
+     - ThreeTriosTextView moved to view package and takes in readonly instead of full model
+   - added interface methods for the requested observations - gridSize, cellContents, getHand, getCellOwner
+   - added listening functionality to the view and model
+
+EXTRA CREDIT:
+extra credit strategies implemented:
+  - can find all of the in src.cs3500.threetrios.model
+    - LeastFlipsComputer
+    - MiniMaxComputer
+    - MergerComputer
+tests for extra credit strategies:
+  - can find all in test.cs3500.threetrios.model
+    - LeastFlipsComputerTest
+    - MiniMaxComputerTest
+    - MergerComputerTest
+
+Changes for part 2:
+    Added functionality/methods:
+    explain what functionality was missing, and why, and how you chose to add it.
+
+
+    - canBePlayed: this function was missing because during homework 5 we did not need a method to check
+    if a certain location could be played since our cell's could already do that. We chose to add it by
+    adding a getter method of sorts.
+    - getPlayer: this function was missing because during homework 5 we did not need a method to get the
+    player at a certain location because our card class could already do something very similar to that.
+    We chose to add it by adding a getter method of sorts.
+    - canBeFlipped: this function was missing because during homework 5 we did not need a method to get the
+    amount of cards a location can flip at the moment. We chose to add it through a recursive approach, similar
+    but different to how we resolve battles.
+    - getScore: this was missing because during homework 5 we did not need a method to get the score of a
+    specific player since we had a similar method calculateScore that did essentially that but decided a
+    winner at the end. We decided to implement it in a similar way to calculateScore but only have it return
+    the score of the desired player.
+    - getOpponent: this was missing because during homework 5 we did not need a method to get the opponent.
+    we decided to implement it by using a getter method of sorts.
+    - getPlayer: this was missing because during homework 5 we did not need a method to get the current player
+    because we had a value currentTurn that essentially did the same thing. We decided to implement it by
+    using a getter method of sorts.
+    - getRedHand: this was missing because during homework 5 we did not need a method to get the red players
+    hand since we already had a similar method getHand in the playerstructure that did the same thing. We
+    decided to implement it by using a getter method of sorts
+    - getBlueHand: this was missing because during homework 5 we did not need a method to get the blue players
+    hand since we already had a similar method getHand in the playerstructure that did the same thing. We
+    decided to implement it by using a getter method of sorts
+    - Updated the viewing methods to allow the view to "read" the model.
+        - Refactored into the ReadOnlyModel
+
+    Changed methods and structures:
+    - moved PlayerStructure out of ThreeTriosModel and into it's own class since having an inner class
+      made mocking impossible. The inner class would conflict when a computer/strategy would try to access
+      it.
+
+Model Invarient:
+
+    A class invariant for ThreeTriosModel would be: gameStarted is only true if startGame has run.
+   1. This is a statement that can be answered with true or false.
+   2. This statement can be satisfied at all points in time.
+      When startGame has not run gameStarted
+      is false since the constructor sets it to false, meaning that
+      any time before startGame is
+      called, gameStarted will be false. After startGame is called
+      there are no other methods that
+      can alter the state of gameStarted. In addition, startGame
+      cannot be called again while gameStarted is true,
+      meaning that gameStarted can never be mutated again and therefore
+      satisfy the invariant statement.
+   3. The constructor sets gameStarted to false, meaning that any time
+      before startGame is called,
+      gameStarted will be false, thus satisfying the invariant statement.
+   4. There are no methods other than the constructor and startGame that
+      modify gameStarted, the
+      only other times gameStarted is used it only being viewed, and thus
+      cannot be changed.
+      Thus, there are no methods that invalidate the class invariant.
+
+ 
