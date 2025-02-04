@@ -1,4 +1,4 @@
-changes for part 3:
+#changes for part 3:
  - tests:
    - made all fields that were not private and could be private private
    - added tests for model interface methods - getGameState(), getPlayer(), canBePlayed(),
